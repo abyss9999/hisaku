@@ -1,0 +1,97 @@
+<html>
+	<head>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/3.5.3/css/tabulator_midnight.min.css" rel="stylesheet">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/tabulator/3.5.3/js/tabulator.min.js"></script>
+		<style>
+			img {
+				height: 200px;
+			}
+			.sean {
+				height: 200px;
+			}
+			.anime {
+				width: 460px;
+				height: 345px;
+				background-size: cover;
+				animation: sprite 0.5s steps(15) infinite;
+				transform: scale(0.58) translate(-166px,-125px);
+			}
+			@keyframes sprite {
+				0%   {background-position: 0 top;}
+				100% {background-position: 0 bottom;}
+			}
+		</style>
+	</head>
+	<body>
+		<button id="save-json">Save JSON</button>
+		<button id="load-json">Load JSON</button>
+		<button id="add-row">add-row</button>
+		<button id="save-csv">save-csv</button>
+		<button id="GroupByID">GroupByID</button>
+		<button id="GroupByRank">GroupByRank</button>
+		<button id="NotGroupBy">NotGroupBy</button>
+		<div id="example-table"></div>
+		<script type="text/javascript">
+			const rankFilter = {"":"", "SR":"SR", "R":"R", "N":"N"};
+			const sean = function(row){
+				
+			}
+			
+			$("#example-table").tabulator({
+				height:"100%",
+				layout:"fitColumns",
+				addRowPos:"top",
+				responsiveLayout:"collapse",
+				groupBy:"preid",
+				groupStartOpen:false,
+				columns:[
+					//{title:"preid",    field:"preid", visible:false},
+					{topCalc:"count", title:"id",      field:"id",      width:160,  editor:"input", headerFilter:"input", formatter:function(cell){
+							return cell.getValue() + "<br><img src=http://157.7.147.219/img/card/de_card_c_" + cell.getValue() + ".jpg>";
+						},
+					},
+					//{topCalc:"count", title:"rank",    field:"rank",    width:62,  editor:"input", headerFilter:"select", headerFilterParams:rankFilter},
+					{topCalc:"count", title:"name",    field:"name",    width:244, editor:"input", headerFilter:"input"},
+					{topCalc:"count", title:"comment", field:"comment",            editor:"textarea", formatter:"textarea", headerFilter:"input", },
+					{topCalc:"count", title:"sean2-1", field:"sean3", width:276, editor:"input", formatter:function(cell){
+							if(cell.getValue() != ""){
+								return "<div class=sean><div class=anime style=background:url(http://157.7.147.219/img/" + cell.getValue() + "_sean2_1.jpg)></div></div>";
+							}
+						},
+					},
+					{topCalc:"count", title:"sean3",   field:"sean3",   width:276, editor:"input", formatter:function(cell){
+							if(cell.getValue() != ""){
+								return "<img src=http://157.7.147.219/img/" + cell.getValue() + "_sean3.jpg>";
+							}
+						},
+					},
+				],
+			});
+			$("#example-table").tabulator("setData", "devil.json");
+			
+			$("#save-json").click(function(){
+				$("#example-table").tabulator("download", "json", "devil.json");
+			});
+			$("#load-json").click(function(){
+				$("#example-table").tabulator("setData", "devil.json");
+			});
+			$("#add-row").click(function(){
+				$("#example-table").tabulator("addRow", {});
+			});
+			$("#save-csv").click(function(){
+				$("#example-table").tabulator("download", "csv", "devil.csv");
+			});
+			$("#GroupByID").click(function(){
+				$("#example-table").tabulator("setGroupBy", "preid");
+			});
+			$("#GroupByRank").click(function(){
+				$("#example-table").tabulator("setGroupBy", "rank");
+			});
+			$("#NotGroupBy").click(function(){
+				$("#example-table").tabulator("setGroupBy", "");
+			});
+		</script>
+	</body>
+</html>
